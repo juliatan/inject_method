@@ -61,4 +61,8 @@ describe 'Inject' do
     expect([1,2,3].reduce2(6){|result,el| result * el}).to eq 36
   end
 
+  it 'takes a symbol' do
+  	expect([1,2,3].reduce2(:*)).to eq 6
+  end
+
 end
