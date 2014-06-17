@@ -37,32 +37,35 @@ end
 
 describe 'Inject' do
 
+  let(:arr) { [1,2,3,4] }
+  let(:smaller_arr) { [1,2,3] }
+  let(:add_block) {Proc.new {|result,el| result + el}}
+  let(:subtract_block) {Proc.new {|result,el| result - el}}
+  let(:multiply_block) {Proc.new {|result,el| result * el}}
+
+
   it 'sums all elements of array' do
-    expect([1,2,3,4].reduce2{|result,el| result + el}).to eq 10
+    expect(arr.reduce2(&add_block)).to eq arr.inject(&add_block)
   end
 
   it 'substracts all elements of array via yield approach' do
-    expect([1,2,3,4].reduce2{|result,el| result - el}).to eq -8
+    expect(arr.reduce2(&subtract_block)).to eq arr.inject(&subtract_block)
   end 
 
   it 'substracts elements of array with starting value of 5' do
-    expect([1,2,3,4].reduce2(5){|result,el| result - el}).to eq -5
+    expect(arr.reduce2(5, &subtract_block)).to eq arr.inject(5, &subtract_block)
   end
 
   it 'multiplies all elements of array' do
-    expect([1,2,3].reduce2{|result,el| result * el}).to eq 6
+    expect(smaller_arr.reduce2(&multiply_block)).to eq smaller_arr.inject(&multiply_block)
   end
 
   it 'multiplies all elements of array starting with 5' do
-    expect([1,2,3].reduce2(6){|result,el| result * el}).to eq 36
-  end
-
-  it 'multiplies all elements of array starting with 5 (yield approach)' do
-    expect([1,2,3].reduce2(6){|result,el| result * el}).to eq 36
+    expect(smaller_arr.reduce2(6, &multiply_block)).to eq smaller_arr.inject(6, &multiply_block)
   end
 
   it 'takes a symbol' do
-  	expect([1,2,3].reduce2(:*)).to eq 6
+  	expect(smaller_arr.reduce2(:*)).to eq smaller_arr.inject(:*)
   end
 
 end
